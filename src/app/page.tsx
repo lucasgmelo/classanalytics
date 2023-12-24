@@ -1,16 +1,10 @@
 "use client";
-import styled from "styled-components";
-import { Button as AntdButton } from "antd";
-
-const Button = styled(AntdButton)`
-  font-size: 24px;
-`;
+import Box from "components/Box";
 
 export default function Home() {
   return (
     <main>
-      <h1>Boilerplate</h1>
-      <Button>Testando</Button>
+      <Box>teste</Box>
     </main>
   );
 }

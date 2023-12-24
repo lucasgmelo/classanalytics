@@ -19,6 +19,17 @@ const GlobalStyle = createGlobalStyle`
     }
   }
 
+  body {
+    height: 100vh;
+    background: #35005B;
+  }
+  
+  main {
+    height: 100vh;
+    display: grid;
+    place-items: center;
+  }
+
   body, input, textarea, select, button {
     font: 400 1rem "Inter", sans-serif;
   }
