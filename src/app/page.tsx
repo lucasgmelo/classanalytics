@@ -1,10 +1,6 @@
 "use client";
-import Box from "components/Box";
+import { Home as HomeView } from "views/Home";
 
 export default function Home() {
-  return (
-    <main>
-      <Box>teste</Box>
-    </main>
-  );
+  return <HomeView />;
 }

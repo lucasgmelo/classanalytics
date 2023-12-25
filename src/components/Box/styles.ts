@@ -9,4 +9,8 @@ export const Wrapper = styled.div`
   box-shadow: 0px 2px 8px 0px rgba(0, 0, 0, 0.15);
 
   padding: 40px;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 `;
