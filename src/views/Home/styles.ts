@@ -7,6 +7,7 @@ export const Wrapper = styled.main`
   justify-content: center;
 
   background: #fafafa;
+  width: 100vw;
 `;
 
 export const Section = styled.div`
@@ -19,7 +20,7 @@ export const Section = styled.div`
 `;
 
 export const Title = styled.h1<{ primary?: boolean }>`
-  font-size: 3rem;
+  font-size: 2.8rem;
   color: ${({ primary }) => (primary ? "#35005B" : "#000")};
 `;
 
@@ -28,7 +29,7 @@ export const Texts = styled.div`
   margin-bottom: 64px;
 
   p {
-    font-size: 1.5rem;
+    font-size: 1.4rem;
     margin-bottom: 24px;
     font-weight: 300;
   }

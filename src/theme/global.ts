@@ -19,13 +19,14 @@ const GlobalStyle = createGlobalStyle`
     }
   }
 
-  body {
-    height: 100vh;
+  body, .ant-layout-content {
+    min-height: 100vh;
     background: #35005B;
   }
   
   main {
-    height: 100vh;
+    min-height: 100vh;
+    min-width: 100vw;
     display: grid;
     place-items: center;
   }

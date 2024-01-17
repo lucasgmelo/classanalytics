@@ -13,7 +13,7 @@ import { Step3 } from "./Step3";
 import { useRouter } from "next/router";
 
 export const Steps = () => {
-  const router = useRouter();
+  // const router = useRouter();
 
   const [currentStep, setCurrentStep] = useState(0);
 
@@ -61,7 +61,11 @@ export const Steps = () => {
         {currentStep === 2 && (
           <Fragment>
             <Step3 />
-            <Button size="large" block onClick={() => router.push("/sucesso")}>
+            <Button
+              size="large"
+              block
+              // onClick={() => router.push("/sucesso")}
+            >
               Finalizar
             </Button>
           </Fragment>

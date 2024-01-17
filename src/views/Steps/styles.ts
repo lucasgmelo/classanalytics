@@ -24,7 +24,8 @@ export const Description = styled.p`
 `;
 
 export const UploadWrapper = styled.div`
-  height: 600px;
+  max-height: 600px;
+  height: 90%;
   padding: 24px 0;
 `;
 
