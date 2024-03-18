@@ -1,56 +1,59 @@
-import { DownloadOutlined } from "@ant-design/icons";
-import { Emoji } from "@styled-icons/fluentui-system-regular";
-import { Breadcrumb, Button, Tooltip } from "antd";
+import { DownloadOutlined, QuestionCircleOutlined } from "@ant-design/icons";
+import { Emoji, EmojiSad } from "@styled-icons/fluentui-system-regular";
+import {
+  Breadcrumb,
+  Button,
+  CollapseProps,
+  Tooltip as AntdTooltip,
+} from "antd";
 import Link from "next/link";
 import {
+  Area,
+  AreaChart,
   CartesianGrid,
-  Tooltip as ChartTooltip,
-  Line,
-  LineChart,
   ResponsiveContainer,
   XAxis,
   YAxis,
+  Tooltip,
 } from "recharts";
-import { CompleteDataType } from "types/interfaces";
+import { Lecture } from "types/interfaces";
 import * as S from "./styles";
-import ReactPlayer from "react-player";
+
+import longo from "data/longo_out.json";
 
 export const Class = () => {
-  // const router = useRouter();
+  const data: Lecture = longo;
 
-  const data: CompleteDataType = {
-    name: "Aula 1",
-    description: "Bioquímica aplicada",
-    date: "12/03/2024",
-    duration: 3090,
-    status: "available",
-    action: "123",
-    insights: {
-      text: "O nível de engajamento foi baixo durante os 10 primeiros minutos.",
-      emotion: "Satisfação",
-    },
-    highlights: [
-      {
-        line: "[00:19:40-00:20:13] Transcrição da fala no momento ",
-        emotion: "As emoções de Anseio aumentaram",
-        meaning: "Anseio é ...",
-      },
-    ],
-    engaging: [
-      "Nos primeiros 60 minutos o nível de engajamento foi baixo",
-      "O nível de engajamento dobrou no tempo [105:30:14] Transcrição da fala no momento",
-    ],
+  const formatChartData = (data: Array<number>) => {
+    return data.map((item, frame) => {
+      return {
+        time: frame,
+        "Pessoas olhando": item,
+      };
+    });
   };
 
-  const chartData = [
-    { time: "10min", level: 4000 },
-    { time: "20min", level: 3000 },
-    { time: "30min", level: 2000 },
-    { time: "40min", level: 2500 },
-    { time: "50min", level: 1890 },
-    { time: "60min", level: 1500 },
-    { time: "70min", level: 1000 },
-  ];
+  const positiveCollapseItems: CollapseProps["items"] =
+    data.data.positive_highlight_segments.map((item) => {
+      return {
+        key: item.start_second,
+        label: `${item.start_second.toFixed(2)}s - ${item.end_second.toFixed(
+          2
+        )}s`,
+        children: <S.Transcription>{item.text}</S.Transcription>,
+      };
+    });
+
+  const negativeCollapseItems: CollapseProps["items"] =
+    data.data.negative_highlight_segments.map((item) => {
+      return {
+        key: item.start_second,
+        label: `${item.start_second.toFixed(2)}s - ${item.end_second.toFixed(
+          2
+        )}s`,
+        children: <S.Transcription>{item.text}</S.Transcription>,
+      };
+    });
 
   return (
     <S.Wrapper>
@@ -58,7 +61,7 @@ export const Class = () => {
         <Breadcrumb
           items={[
             {
-              title: <Link href="/aulas">Aulas</Link>,
+              title: <Link href="/">Aulas</Link>,
             },
             {
               title: data.name,
@@ -76,34 +79,95 @@ export const Class = () => {
           {data.description} | {data.date}
         </p>
         <S.Content>
-          <h3>Insights</h3>
-          <p>{data.insights.text}</p>
-          <p>
-            <Emoji size={24} /> {data.insights.emotion}
-          </p>
-        </S.Content>
-        <S.Content>
-          <h3>Highlights</h3>
-          {data.highlights.map((highlight) => (
-            <div key={highlight.line}>
-              <p>{highlight.line}</p>
-              <Tooltip title={highlight.meaning}>{highlight.emotion}</Tooltip>
+          <h3>Dados gerais de engajamento</h3>
+          <S.Helper>
+            O algoritmo usado para medir engajamento é calculado a partir da
+            quantidade de pessoas olhando para o foco.
+          </S.Helper>
+
+          <S.Engagement>
+            <div>
+              <h3>
+                Média{" "}
+                <AntdTooltip title="Média do número de pessoas que prestaram atenção à aula">
+                  <QuestionCircleOutlined />
+                </AntdTooltip>
+              </h3>
+              <p className="big_number">
+                {(data.data.media_geral * 100).toFixed(2)}%
+              </p>
             </div>
-          ))}
+            <div>
+              <h3>
+                Valor mais alto{" "}
+                <AntdTooltip title="Número máximo de pessoas que prestaram atenção em dado momento">
+                  <QuestionCircleOutlined />
+                </AntdTooltip>
+              </h3>
+              <p className="big_number">
+                {(data.data.upper_threshold * 100).toFixed(2)}%
+              </p>
+            </div>
+            <div>
+              <h3>
+                Valor mais baixo{" "}
+                <AntdTooltip title="Número mínimo de pessoas que prestaram atenção em dado momento">
+                  <QuestionCircleOutlined />
+                </AntdTooltip>
+              </h3>
+              <p className="big_number">
+                {(data.data.lower_threshold * 100).toFixed(2)}%
+              </p>
+            </div>
+          </S.Engagement>
         </S.Content>
         <S.Content>
-          <h3>Engajamento</h3>
-          {data.engaging.map((engaje) => (
-            <p key={engaje}>{engaje}</p>
-          ))}
+          <h3>
+            <Emoji size={24} /> Destaques positivos
+          </h3>
+          <S.Helper>
+            Esses momentos da aula apresentaram mais engajamento do que o
+            normal, confira o que estava sendo dito no exato momento.
+          </S.Helper>
+          <S.CollapseStyled items={positiveCollapseItems} />
+          {/* {data.data.positive_highlight_segments.map((item) => (
+            <S.Highlight key={String(item)}>
+              <span key={item.start_second}>
+                {item.start_second.toFixed(2)}s - {item.end_second.toFixed(2)}s
+              </span>
+              <S.Transcription>{item.text}</S.Transcription>
+            </S.Highlight>
+          ))} */}
         </S.Content>
         <S.Content>
-          <h3>Engajamento no decorrer do tempo</h3>
+          <h3>
+            <EmojiSad size={24} /> Destaques negativos
+          </h3>
+          <S.Helper>
+            Nesses momentos não foi prestada tanta atenção... Veja qual era o
+            assunto e saiba o que melhorar.
+          </S.Helper>
+          <S.CollapseStyled items={negativeCollapseItems} />
+
+          {/* {data.data.negative_highlight_segments.map((item) => (
+            <S.Highlight key={String(item)}>
+              <span key={item.start_second}>
+                {item.start_second.toFixed(2)}s - {item.end_second.toFixed(2)}s
+              </span>
+              <S.Transcription>{item.text}</S.Transcription>
+            </S.Highlight>
+          ))} */}
+        </S.Content>
+        <S.Content>
+          <h3>Engajamento x frame</h3>
+          <S.Helper>
+            Gráfico de evolução de quantas pessoas olharam a cada frame
+          </S.Helper>
           <ResponsiveContainer width="100%" height={200}>
-            <LineChart
-              // width={200}
-              height={200}
-              data={chartData}
+            <AreaChart
+              width={500}
+              height={400}
+              data={formatChartData(data.data["predictor.looking_per_frame"])}
               margin={{
                 top: 10,
                 right: 30,
@@ -114,20 +178,39 @@ export const Class = () => {
               <CartesianGrid strokeDasharray="3 3" />
               <XAxis dataKey="time" />
               <YAxis />
+              <Tooltip />
+              <Area
+                type="monotone"
+                dataKey="Pessoas olhando"
+                stroke="#8884d8"
+                fill="#8884d8"
+                // dot={false}
+              />
+            </AreaChart>
+            {/* <LineChart
+              // width={200}
+              height={200}
+              data={formatChartData(data.data["predictor.looking_per_frame"])}
+              margin={{
+                top: 10,
+                right: 30,
+                left: 0,
+                bottom: 0,
+              }}
+            >
+              <CartesianGrid strokeDasharray="1 1" />
+              <XAxis dataKey="time" />
+              <YAxis />
               <ChartTooltip />
               <Line
                 connectNulls
                 type="monotone"
-                dataKey="level"
+                dataKey="Pessoas olhando"
                 stroke="#8884d8"
-                fill="#8884d8"
+                dot={false}
               />
-            </LineChart>
+            </LineChart> */}
           </ResponsiveContainer>
-        </S.Content>
-        <S.Content>
-          <h3>Visualização</h3>
-          <p>video aqui</p>
         </S.Content>
       </S.Section>
     </S.Wrapper>

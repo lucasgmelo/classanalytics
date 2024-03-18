@@ -13,9 +13,9 @@ export const Wrapper = styled.main`
 
 export const Section = styled.div`
   background: #fafafa;
-  width: 90%;
+  width: 100%;
 
-  padding: 64px 24px;
+  padding: 24px;
   border-radius: 5px;
 
   .ant-table-wrapper {

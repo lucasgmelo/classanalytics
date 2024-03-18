@@ -21,14 +21,7 @@ const GlobalStyle = createGlobalStyle`
 
   body, .ant-layout-content {
     min-height: 100vh;
-    background: #35005B;
-  }
-  
-  main {
-    min-height: 100vh;
-    min-width: 100vw;
-    display: grid;
-    place-items: center;
+    background: #fafafa;
   }
 
   body, input, textarea, select, button {

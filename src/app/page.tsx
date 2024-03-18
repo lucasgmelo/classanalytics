@@ -1,6 +1,6 @@
 "use client";
-import { Home as HomeView } from "views/Home";
+import { Classes } from "views/Classes";
 
 export default function Home() {
-  return <HomeView />;
+  return <Classes />;
 }

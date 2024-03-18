@@ -100,7 +100,7 @@ export const Classes = () => {
           dataSource={fakeData}
           onRow={(record) => {
             return {
-              onClick: () => router.push(`/aulas/${record.key}`),
+              onClick: () => router.push(`/${record.key}`),
             };
           }}
         />
