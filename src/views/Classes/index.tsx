@@ -35,56 +35,32 @@ export const Classes = () => {
         </Tag>
       ),
     },
-    {
-      title: " ",
-      dataIndex: "action",
-      key: "action",
-      render: (id: string) => (
-        <Link href={`/aulas/${id}`} className="link">
-          Baixar relatório
-        </Link>
-      ),
-    },
+    // {
+    //   title: " ",
+    //   dataIndex: "action",
+    //   key: "action",
+    //   render: (id: string) => (
+    //     <Link href={`/aulas/${id}`} className="link">
+    //       Baixar relatório
+    //     </Link>
+    //   ),
+    // },
   ];
 
   const fakeData: ResumedDataType[] = [
     {
-      key: "Aula 1",
+      key: "1",
       name: "Aula 1",
-      date: "12/10/23",
-      duration: 3090,
-      status: "loading",
+      date: "12/03/24",
+      duration: 247,
+      status: "available",
       action: "123",
     },
     {
-      key: "Aula 2",
+      key: "2",
       name: "Aula 2",
-      date: "12/10/23",
-      duration: 3090,
-      status: "available",
-      action: "123",
-    },
-    {
-      key: "Aula 3",
-      name: "Aula 3",
-      date: "12/10/23",
-      duration: 3090,
-      status: "error",
-      action: "123",
-    },
-    {
-      key: "Aula 4",
-      name: "Aula 4",
-      date: "12/10/23",
-      duration: 3090,
-      status: "available",
-      action: "123",
-    },
-    {
-      key: "Aula 5",
-      name: "Aula 5",
-      date: "12/10/23",
-      duration: 3090,
+      date: "12/03/24",
+      duration: 807,
       status: "available",
       action: "123",
     },
@@ -94,7 +70,7 @@ export const Classes = () => {
     <S.Wrapper>
       <S.Section>
         <S.Title>Análises geradas</S.Title>
-        <p>Descrição legal?</p>
+        <p>Todas as geradas pelo classanalytics</p>
         <Table
           columns={columns}
           dataSource={fakeData}

@@ -1,23 +1,10 @@
 export function formatTime(segundos: number): string {
-  const horas = Math.floor(segundos / 3600);
-  const minutos = Math.floor((segundos % 3600) / 60);
-  const segundosRestantes = segundos % 60;
+  const minutos = Math.floor(segundos / 60);
+  const segundosRestantes = Math.round(segundos % 60); // Arredonda para o número inteiro mais próximo
+  const minutosString = minutos > 0 ? minutos + "m" : "";
+  const segundosString = segundosRestantes > 0 ? segundosRestantes + "s" : "0s"; // Adiciona "0s" se não houver segundos
 
-  let resultado = "";
-
-  if (horas > 0) {
-    resultado += `${horas}h`;
-  }
-
-  if (minutos > 0) {
-    resultado += `${minutos}m`;
-  }
-
-  if (segundosRestantes > 0 || resultado === "") {
-    resultado += `${segundosRestantes}s`;
-  }
-
-  return resultado;
+  return minutosString + segundosString;
 }
 
 export function renderTagColor(type: string): string {
@@ -33,4 +20,16 @@ export function formatTagText(type: string): string {
   if (type === "loading") return "Carregando";
 
   return "Erro";
+}
+
+export function formatDate(dateString: string): string {
+  const partesData = dateString.split("-");
+
+  const ano = partesData[0].substring(2);
+  const mes = partesData[1];
+  const dia = partesData[2];
+
+  const dataFormatada = `${dia}/${mes}/${ano}`;
+
+  return dataFormatada;
 }

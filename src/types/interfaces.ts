@@ -48,6 +48,7 @@ export interface ResumedDataType {
 export type Data = {
   "predictor.looking_per_frame": Array<number>;
   "predictor.total_per_frame": Array<number>;
+  percentage_looking_seconds: Array<number>;
   percentage_looking: Array<number>;
   media_geral: number;
   upper_threshold: number;

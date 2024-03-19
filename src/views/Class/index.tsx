@@ -1,10 +1,11 @@
+"use client";
 import { DownloadOutlined, QuestionCircleOutlined } from "@ant-design/icons";
 import { Emoji, EmojiSad } from "@styled-icons/fluentui-system-regular";
 import {
+  Tooltip as AntdTooltip,
   Breadcrumb,
   Button,
   CollapseProps,
-  Tooltip as AntdTooltip,
 } from "antd";
 import Link from "next/link";
 import {
@@ -12,23 +13,47 @@ import {
   AreaChart,
   CartesianGrid,
   ResponsiveContainer,
+  Tooltip,
   XAxis,
   YAxis,
-  Tooltip,
 } from "recharts";
 import { Lecture } from "types/interfaces";
 import * as S from "./styles";
 
-import longo from "data/longo_out.json";
+import { default as curto } from "data/curto_outAA.json";
+import { default as longo } from "data/longo_outAA.json";
+import { formatDate, formatTime } from "utils/functions";
+import { useState } from "react";
+import { useParams } from "next/navigation";
+
+import dynamic from "next/dynamic";
+const ReactPlayer = dynamic(() => import("react-player"), { ssr: false });
 
 export const Class = () => {
-  const data: Lecture = longo;
+  const { id } = useParams();
+  const long_data: Lecture = longo;
+  const short_data: Lecture = curto;
+
+  const [data, setData] = useState(() => {
+    console.log(id);
+    if (id === "1") return long_data;
+    return short_data;
+  });
+  // const data = {
+  //   '1': long_data,
+  //   '2': short_data,
+  // }
+
+  // const getData = (id: string | string[]) => {
+  //   if (id === "1") return short_data;
+  //   return long_data;
+  // };
 
   const formatChartData = (data: Array<number>) => {
-    return data.map((item, frame) => {
+    return data.map((item, second) => {
       return {
-        time: frame,
-        "Pessoas olhando": item,
+        time: formatTime(second),
+        "Porcentagem de pessoas olhando": (item * 100).toFixed(2),
       };
     });
   };
@@ -37,9 +62,9 @@ export const Class = () => {
     data.data.positive_highlight_segments.map((item) => {
       return {
         key: item.start_second,
-        label: `${item.start_second.toFixed(2)}s - ${item.end_second.toFixed(
-          2
-        )}s`,
+        label: `${formatTime(
+          Number(item.start_second.toFixed(2))
+        )} - ${formatTime(Number(item.end_second.toFixed(2)))}`,
         children: <S.Transcription>{item.text}</S.Transcription>,
       };
     });
@@ -48,9 +73,9 @@ export const Class = () => {
     data.data.negative_highlight_segments.map((item) => {
       return {
         key: item.start_second,
-        label: `${item.start_second.toFixed(2)}s - ${item.end_second.toFixed(
-          2
-        )}s`,
+        label: `${formatTime(
+          Number(item.start_second.toFixed(2))
+        )} - ${formatTime(Number(item.end_second.toFixed(2)))}`,
         children: <S.Transcription>{item.text}</S.Transcription>,
       };
     });
@@ -71,12 +96,12 @@ export const Class = () => {
         <S.Title>
           <h1>{data.name}</h1>
 
-          <Button type="primary" icon={<DownloadOutlined />}>
+          {/* <Button type="primary" icon={<DownloadOutlined />}>
             Baixar relatório
-          </Button>
+          </Button> */}
         </S.Title>
         <p>
-          {data.description} | {data.date}
+          {data.description} | {formatDate(data.date)}
         </p>
         <S.Content>
           <h3>Dados gerais de engajamento</h3>
@@ -97,7 +122,7 @@ export const Class = () => {
                 {(data.data.media_geral * 100).toFixed(2)}%
               </p>
             </div>
-            <div>
+            {/* <div>
               <h3>
                 Valor mais alto{" "}
                 <AntdTooltip title="Número máximo de pessoas que prestaram atenção em dado momento">
@@ -118,7 +143,7 @@ export const Class = () => {
               <p className="big_number">
                 {(data.data.lower_threshold * 100).toFixed(2)}%
               </p>
-            </div>
+            </div> */}
           </S.Engagement>
         </S.Content>
         <S.Content>
@@ -159,15 +184,15 @@ export const Class = () => {
           ))} */}
         </S.Content>
         <S.Content>
-          <h3>Engajamento x frame</h3>
+          <h3>Engajamento x segundo</h3>
           <S.Helper>
-            Gráfico de evolução de quantas pessoas olharam a cada frame
+            Gráfico de evolução da porcentagem de pessoas olhando a cada segundo
           </S.Helper>
           <ResponsiveContainer width="100%" height={200}>
             <AreaChart
               width={500}
               height={400}
-              data={formatChartData(data.data["predictor.looking_per_frame"])}
+              data={formatChartData(data.data.percentage_looking_seconds)}
               margin={{
                 top: 10,
                 right: 30,
@@ -181,7 +206,7 @@ export const Class = () => {
               <Tooltip />
               <Area
                 type="monotone"
-                dataKey="Pessoas olhando"
+                dataKey="Porcentagem de pessoas olhando"
                 stroke="#8884d8"
                 fill="#8884d8"
                 // dot={false}
@@ -211,6 +236,16 @@ export const Class = () => {
               />
             </LineChart> */}
           </ResponsiveContainer>
+          <S.Content>
+            <h3>Vídeo</h3>
+            {data && (
+              <ReactPlayer
+                url={data.finished_video}
+                width="1200px"
+                height="600px"
+              />
+            )}
+          </S.Content>
         </S.Content>
       </S.Section>
     </S.Wrapper>
