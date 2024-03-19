@@ -100,7 +100,7 @@ export const Transcription = styled.div`
   margin-top: 8px;
 
   font-family: monospace;
-  font-size: 0.8rem;
+  font-size: 1.1rem;
 
   background: #eee;
   color: #333333;
@@ -114,7 +114,7 @@ export const Highlight = styled.div`
 `;
 
 export const Helper = styled.p`
-  /* font-size: 0.9rem; */
+  font-size: 1.1rem;
 `;
 
 export const CollapseStyled = styled(Collapse)`

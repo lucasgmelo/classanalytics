@@ -243,6 +243,7 @@ export const Class = () => {
                 url={data.finished_video}
                 width="1200px"
                 height="600px"
+                controls
               />
             )}
           </S.Content>

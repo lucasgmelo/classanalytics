@@ -25,6 +25,9 @@ export default function RootLayout({
 
   return (
     <html className={inter.className}>
+      <head>
+        <title>Class Analytics</title>
+      </head>
       <body>
         <QueryClientProvider client={queryClient}>
           <AntdRegistry>

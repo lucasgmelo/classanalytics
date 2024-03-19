@@ -49,16 +49,16 @@ export const Classes = () => {
 
   const fakeData: ResumedDataType[] = [
     {
-      key: "1",
-      name: "Aula 1",
+      key: "2",
+      name: "Aula 2",
       date: "12/03/24",
       duration: 247,
       status: "available",
       action: "123",
     },
     {
-      key: "2",
-      name: "Aula 2",
+      key: "1",
+      name: "Aula 1",
       date: "12/03/24",
       duration: 807,
       status: "available",
@@ -70,7 +70,7 @@ export const Classes = () => {
     <S.Wrapper>
       <S.Section>
         <S.Title>Análises geradas</S.Title>
-        <p>Todas as geradas pelo classanalytics</p>
+        <p>Todas as análises geradas pelo classanalytics</p>
         <Table
           columns={columns}
           dataSource={fakeData}
